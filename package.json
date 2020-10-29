@@ -1,12 +1,12 @@
 {
-	"name": "graph-class",
+	"name": "graph-rpl-class",
 	"version": "1.0.0",
-	"description": "",
+	"description": "graph class to be used with the rpl controller",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Drauzio Oppenheimer <drauzio.oppenheimer@gmail.com>",
 	"license": "ISC"
 }
