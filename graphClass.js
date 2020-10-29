@@ -21,10 +21,9 @@ class Graph {
 			let memoArray = []
 			this.adjList.set(vertex.address, vertex.parents)
 			vertex.parents.forEach((element, index) => {
-
+				memoArray.push(this.createPath(vertex.address, index))
 			})
-
-			this.memoPathList.set(vertex.address, [])
+			this.memoPathList.set(vertex.address, memoArray)
 		}
 	}
 	getGraph() {
@@ -47,6 +46,10 @@ class Graph {
 			currLevel++
 		}
 		return path.reverse()
+	}
+	getPath(address, parentLevel) {
+		let pathsArray = this.memoPathList.get(address)
+		return pathsArray[Math.min(parentLevel, pathsArray.length - 1)]
 	}
 }
 
