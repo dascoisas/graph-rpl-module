@@ -16,6 +16,7 @@ const main = () => {
 	graph.addVertex({ address: "k", parents: ["d"] })
 	graph.addVertex({ address: "l", parents: ["f"] })
 	console.log(graph.getPath("d", 0))
+	console.log(graph.getVertex("d"))
 }
 
 main()

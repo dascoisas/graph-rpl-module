@@ -26,6 +26,9 @@ class Graph {
 			this.memoPathList.set(vertex.address, memoArray)
 		}
 	}
+	getVertex(vertex) {
+		return this.adjList.get(vertex)
+	}
 	getGraph() {
 		return this.adjList
 	}
