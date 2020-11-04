@@ -15,8 +15,11 @@ const main = () => {
 	graph.addVertex({ address: "j", parents: ["d"] })
 	graph.addVertex({ address: "k", parents: ["d"] })
 	graph.addVertex({ address: "l", parents: ["f"] })
-	console.log(graph.getPath("d", 0))
-	console.log(graph.getVertex("d"))
+	console.log(graph.getPath("l", 0))
+	console.log(graph.getVertex("l"))
+	graph.removeVertex("l")
+	console.log(graph.getPath("l", 0))
+	console.log(graph.getVertex("l"))
 }
 
 main()

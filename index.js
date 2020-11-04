@@ -26,8 +26,16 @@ class Graph {
 			this.memoPathList.set(vertex.address, memoArray)
 		}
 	}
-	getVertex(vertex) {
-		return this.adjList.get(vertex)
+	getVertex(address) {
+		let vertex = this.adjList.get(address)
+		if (vertex == undefined) {
+			return []
+		}
+		return this.adjList.get(address)
+	}
+	removeVertex(address) {
+		this.adjList.delete(address)
+		this.memoPathList.delete(address)
 	}
 	getGraph() {
 		return this.adjList
@@ -55,6 +63,9 @@ class Graph {
 	}
 	getPath(address, parentLevel) {
 		let pathsArray = this.memoPathList.get(address)
+		if (pathsArray == undefined) {
+			return []
+		}
 		return pathsArray[Math.min(parentLevel, pathsArray.length - 1)]
 	}
 }
