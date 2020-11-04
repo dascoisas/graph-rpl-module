@@ -45,6 +45,9 @@ class Graph {
 			path.push(currAddress)
 			currLevel++
 		}
+		if (currAddress != this.rootAddress) {
+			return []
+		}
 		return path.reverse()
 	}
 	getPath(address, parentLevel) {
