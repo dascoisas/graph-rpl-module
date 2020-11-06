@@ -40,6 +40,23 @@ class Graph {
 	getGraph() {
 		return this.adjList
 	}
+	getVisGraph() {
+		let auxGraph = {}
+		let visGraph = []
+		let graphLength = 0
+		for (let [node, parentsArray] of this.adjList) {
+			for (let parent of parentsArray) {
+				if (!auxGraph[parent]) {
+					auxGraph[parent] = { _id: graphLength++, edges: [] }
+				}
+				auxGraph[parent].edges.push(node)
+			}
+		}
+		for (let key in auxGraph) {
+			visGraph.push({ id: key, node: { edges: auxGraph[key].edges } })
+		}
+		return visGraph
+	}
 	createPath(address, parentLevel) {
 		if (!this.coordAddress) {
 			return []
