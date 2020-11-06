@@ -3,9 +3,9 @@ const Graph = require('./index')
 graph = new Graph("cccc::2")
 
 const main = () => {
-	graph.addCoordinator({ address: "a" })
-	graph.addVertex({ address: "b", parents: ["a"] })
-	graph.addVertex({ address: "c", parents: ["a"] })
+	graph.addCoordinator({ address: "aaa" })
+	graph.addVertex({ address: "b", parents: ["aaa"] })
+	graph.addVertex({ address: "c", parents: ["aaa"] })
 	graph.addVertex({ address: "d", parents: ["b"] })
 	graph.addVertex({ address: "e", parents: ["b"] })
 	graph.addVertex({ address: "f", parents: ["c"] })
@@ -16,10 +16,11 @@ const main = () => {
 	graph.addVertex({ address: "k", parents: ["d"] })
 	graph.addVertex({ address: "l", parents: ["f"] })
 	console.log(graph.getPath("l", 0))
-	console.log(graph.getVertex("l"))
-	graph.removeVertex("l")
-	console.log(graph.getPath("l", 0))
-	console.log(graph.getVertex("l"))
+	console.log(graph.getVisGraph())
+	//console.log(graph.getVertex("l"))
+	//graph.removeVertex("l")
+	//console.log(graph.getPath("l", 0))
+	//console.log(graph.getVertex("l"))
 }
 
 main()
