@@ -18,6 +18,7 @@ class Graph {
 		}
 	}
 	addVertex(vertex) {
+		//TODO: need to update all nodes below this one, with the memopath, if we dont do that the nodes below this one could have a problematic path
 		if (this.adjList.get(vertex.address) == undefined && vertex.parents) {
 			let memoArray = []
 			this.adjList.set(vertex.address, vertex.parents)
