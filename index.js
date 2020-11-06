@@ -10,7 +10,7 @@ class Graph {
 			this.coordAddress = vertex.address
 			if (this.rootAddress != undefined) {
 				this.adjList.set(vertex.address, [this.rootAddress])
-				this.memoPathList.set(vertex.address, [this.rootAddress])
+				this.memoPathList.set(vertex.address, [[this.rootAddress]])
 			}
 			else {
 				this.rootAddress = vertex.address
