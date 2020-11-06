@@ -36,6 +36,14 @@ class Graph {
 	removeVertex(address) {
 		this.adjList.delete(address)
 		this.memoPathList.delete(address)
+		//TODO: iterate over all elements and remove this address from them as well and rebuilding the memoPathList
+		for (let [node, parentsArray] of this.adjList) {
+			if (parentsArray.includes(address)) {
+				let newParentsArray = parentsArray.splice(parentsArray.indexOf(address), 1)
+				this.adjList.set(address, newParentsArray)
+				//TODO: rebuild all paths of this node
+			}
+		}
 	}
 	getGraph() {
 		return this.adjList
