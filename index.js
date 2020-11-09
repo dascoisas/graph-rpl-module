@@ -1,16 +1,41 @@
 class Graph {
-	constructor(rootAddress) {
+	constructor(rootAddress, useMemo) {
 		this.rootAddress = rootAddress
-		this.adjList = new Map()
+		this.useMemo = true
+		if (useMemo != undefined) {
+			this.useMemo = useMemo
+		}
+		this.parentList = new Map()
+		this.childList = new Map()
 		this.memoPathList = new Map()
 		this.maxLevel = 20
+	}
+	bfs(startAddress) {
+		let visited = new Set()
+		let queue = []
+		queue.push(startAddress)
+		visited.add(startAddress)
+		while (queue.length > 0) {
+			//TODO: implement our own queue, since .shift has a O(n) complexity instead of O(1)
+			let currentAddress = queue.shift()
+			for (let neighbourAddress of this.childList.get(currentAddress)) {
+				if (!visited.has(neighbourAddress)) {
+					queue.push(neighbourAddress)
+					visited.add(neighbourAddress)
+				}
+			}
+		}
+		return visited
 	}
 	addCoordinator(vertex) {
 		if (vertex.address) {
 			this.coordAddress = vertex.address
 			if (this.rootAddress != undefined) {
-				this.adjList.set(vertex.address, [this.rootAddress])
-				this.memoPathList.set(vertex.address, [[this.rootAddress]])
+				this.parentList.set(vertex.address, new Set([this.rootAddress]))
+				this.childList.set(this.rootAddress, new Set([vertex.address]))
+				if (this.useMemo) {
+					this.memoPathList.set(vertex.address, [[this.rootAddress]])
+				}
 			}
 			else {
 				this.rootAddress = vertex.address
@@ -18,83 +43,28 @@ class Graph {
 		}
 	}
 	addVertex(vertex) {
-		//TODO: need to update all nodes below this one, with the memopath, if we dont do that the nodes below this one could have a problematic path
-		if (this.adjList.get(vertex.address) == undefined && vertex.parents) {
-			let memoArray = []
-			this.adjList.set(vertex.address, vertex.parents)
-			vertex.parents.forEach((element, index) => {
-				memoArray.push(this.createPath(vertex.address, index))
-			})
-			this.memoPathList.set(vertex.address, memoArray)
-		}
-	}
-	getVertex(address) {
-		let vertex = this.adjList.get(address)
-		if (vertex == undefined) {
-			return []
-		}
-		return this.adjList.get(address)
-	}
-	removeVertex(address) {
-		this.adjList.delete(address)
-		this.memoPathList.delete(address)
-		//TODO: iterate over all elements and remove this address from them as well and rebuilding the memoPathList
-		for (let [node, parentsArray] of this.adjList) {
-			if (parentsArray.includes(address)) {
-				let newParentsArray = parentsArray.splice(parentsArray.indexOf(address), 1)
-				this.adjList.set(address, newParentsArray)
-				//TODO: rebuild all paths of this node
-			}
-		}
-	}
-	getGraph() {
-		return this.adjList
-	}
-	getVisGraph() {
-		let auxGraph = {}
-		let visGraph = []
-		let graphLength = 0
-		for (let [node, parentsArray] of this.adjList) {
-			for (let parent of parentsArray) {
-				if (!auxGraph[parent]) {
-					auxGraph[parent] = { _id: graphLength++, edges: [] }
+		if (this.parentList.get(vertex.address) == undefined && vertex.parents) {
+			this.parentList.set(vertex.address, new Set([vertex.parents]))
+			vertex.parents.forEach(element => {
+				let tempSet = this.childList.get(element)
+				if (tempSet == undefined) {
+					this.childList.set(element, new Set([vertex.address]))
 				}
-				auxGraph[parent].edges.push(node)
+				else {
+					tempSet.add(vertex.address)
+				}
+			})
+			if (this.useMemo) {
+				let memoArray = []
+				vertex.parents.forEach((element, index) => {
+					memoArray.push(this.createPath(vertex.address, index))
+				})
+				this.memoPathList.set(vertex.address, memoArray)
+				//TODO: need to update all child nodes paths as well, otherwise they will have a wrong path to root
 			}
 		}
-		for (let key in auxGraph) {
-			visGraph.push({ id: key, node: { edges: auxGraph[key].edges } })
-		}
-		return visGraph
 	}
-	createPath(address, parentLevel) {
-		if (!this.coordAddress) {
-			return []
-		}
-		if (address == this.rootAddress) {
-			return [address]
-		}
-		let currLevel = 1
-		let currAddressParents = this.adjList.get(address)
-		let currAddress = currAddressParents[Math.min(parentLevel, currAddressParents.length - 1)]
-		let path = [address, currAddress]
-		while (currAddress != this.rootAddress && currLevel < this.maxLevel) {
-			currAddress = this.adjList.get(currAddress)[0]
-			path.push(currAddress)
-			currLevel++
-		}
-		if (currAddress != this.rootAddress) {
-			return []
-		}
-		return path.reverse()
-	}
-	getPath(address, parentLevel) {
-		let pathsArray = this.memoPathList.get(address)
-		if (pathsArray == undefined) {
-			return []
-		}
-		return pathsArray[Math.min(parentLevel, pathsArray.length - 1)]
-	}
+
 }
 
 module.exports = Graph
