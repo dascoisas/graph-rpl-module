@@ -9,6 +9,7 @@ const main = () => {
 	graph.addVertex({ address: "d", parents: ["b"] })
 	console.log(graph.parentList)
 	console.log(graph.childList)
+	console.log(graph.bfs("aaaa"))
 	//graph.addVertex({ address: "e", parents: ["b"] })
 	//graph.addVertex({ address: "f", parents: ["c"] })
 	//graph.addVertex({ address: "g", parents: ["c"] })

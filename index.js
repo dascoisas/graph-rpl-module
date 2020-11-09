@@ -13,15 +13,18 @@ class Graph {
 	bfs(startAddress) {
 		let visited = new Set()
 		let queue = []
+		let cont = 0
 		queue.push(startAddress)
-		visited.add(startAddress)
-		while (queue.length > 0) {
-			//TODO: implement our own queue, since .shift has a O(n) complexity instead of O(1)
-			let currentAddress = queue.shift()
-			for (let neighbourAddress of this.childList.get(currentAddress)) {
-				if (!visited.has(neighbourAddress)) {
-					queue.push(neighbourAddress)
-					visited.add(neighbourAddress)
+		while (cont < queue.length) {
+			let currentAddress = queue[cont++]
+			console.log(queue.length, cont)
+			let tempSet = this.childList.get(currentAddress)
+			if (tempSet != undefined) {
+				for (let neighbourAddress of tempSet) {
+					if (!visited.has(neighbourAddress)) {
+						queue.push(neighbourAddress)
+						visited.add(neighbourAddress)
+					}
 				}
 			}
 		}
