@@ -105,6 +105,13 @@ class Graph {
 		}
 		return pathsArray[Math.min(parentLevel, pathsArray.length - 1)]
 	}
+	getVisGraph() {
+		let visGraph = []
+		for (let [address, childSet] of this.childList) {
+			visGraph.push({ id: address, node: { edges: [...childSet] } })
+		}
+		return visGraph
+	}
 }
 
 module.exports = Graph
