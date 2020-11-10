@@ -17,7 +17,6 @@ class Graph {
 		queue.push(startAddress)
 		while (cont < queue.length) {
 			let currentAddress = queue[cont++]
-			console.log(queue.length, cont)
 			let tempSet = this.childList.get(currentAddress)
 			if (tempSet != undefined) {
 				for (let neighbourAddress of tempSet) {
@@ -50,6 +49,30 @@ class Graph {
 				this.memoPathList.set(vertex.address, [this.createPath(vertex.address, 0)])
 			}
 		}
+	}
+	removeVertex(address) {
+		//TODO: Hell implementation, need to verify all it's children and delete each one, recursively
+		//First, do a BFS to search for all it's childs
+		let childSet = this.bfs(address)
+		let parentSet = this.parentList.get(address)
+		let removedVertices = [address]
+		//Verify childrens parents, if this node is the only one, and mark them to future delete
+		for (let child of childSet) {
+			let childParentSet = this.parentList.get(child)
+			removedVertices.forEach(removedItem => {
+				childParentSet.delete(removedItem)
+			})
+			if (childParentSet.size == 0) {
+				removedVertices.push(child)
+			}
+			//Need to verify if it's children parent exists, if so, delete this item from it's childList
+			//Iterate over all this children parents array, and remove this node from its parentList
+		}
+		console.log(removedVertices)
+		for (let parent of parentSet) {
+			//console.log(parent)
+		}
+
 	}
 	addVertex(vertex) {
 		if (this.parentList.get(vertex.address) == undefined && vertex.parents) {
