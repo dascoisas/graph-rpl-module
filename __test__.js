@@ -1,15 +1,16 @@
 const Graph = require('./index')
 
-graph = new Graph("cccc::2", false)
+graph = new Graph("", true)
 
 const main = () => {
 	graph.addCoordinator({ address: "aaaa" })
 	graph.addVertex({ address: "b", parents: ["aaaa"] })
 	graph.addVertex({ address: "c", parents: ["aaaa"] })
 	graph.addVertex({ address: "d", parents: ["b"] })
-	console.log(graph.parentList)
-	console.log(graph.childList)
-	console.log(graph.bfs("aaaa"))
+	console.log(graph.memoPathList)
+	//console.log(graph.parentList)
+	//console.log(graph.childList)
+	//console.log(graph.bfs("aaaa"))
 	//graph.addVertex({ address: "e", parents: ["b"] })
 	//graph.addVertex({ address: "f", parents: ["c"] })
 	//graph.addVertex({ address: "g", parents: ["c"] })

@@ -33,25 +33,32 @@ class Graph {
 	addCoordinator(vertex) {
 		if (vertex.address) {
 			this.coordAddress = vertex.address
-			if (this.rootAddress != undefined) {
-				this.parentList.set(vertex.address, new Set([this.rootAddress]))
-				this.childList.set(this.rootAddress, new Set([vertex.address]))
+			if (this.rootAddress != "") {
+				let parentSet = new Set()
+				let childSet = new Set()
+				parentSet.add(this.rootAddress)
+				childSet.add(vertex.address)
+				this.parentList.set(vertex.address, parentSet)
+				this.childList.set(this.rootAddress, childSet)
 				if (this.useMemo) {
-					this.memoPathList.set(vertex.address, [[this.rootAddress]])
+					this.memoPathList.set(vertex.address, [this.createPath(vertex.address, 0)])
 				}
 			}
 			else {
 				this.rootAddress = vertex.address
+				this.memoPathList.set(vertex.address, [this.createPath(vertex.address, 0)])
 			}
 		}
 	}
 	addVertex(vertex) {
 		if (this.parentList.get(vertex.address) == undefined && vertex.parents) {
-			this.parentList.set(vertex.address, new Set([vertex.parents]))
+			this.parentList.set(vertex.address, new Set(vertex.parents))
 			vertex.parents.forEach(element => {
 				let tempSet = this.childList.get(element)
 				if (tempSet == undefined) {
-					this.childList.set(element, new Set([vertex.address]))
+					let childSet = new Set()
+					childSet.add(vertex.address)
+					this.childList.set(element, childSet)
 				}
 				else {
 					tempSet.add(vertex.address)
@@ -63,9 +70,29 @@ class Graph {
 					memoArray.push(this.createPath(vertex.address, index))
 				})
 				this.memoPathList.set(vertex.address, memoArray)
-				//TODO: need to update all child nodes paths as well, otherwise they will have a wrong path to root
 			}
 		}
+	}
+	createPath(address, parentLevel) {
+		if (!this.coordAddress) {
+			return []
+		}
+		if (address == this.rootAddress) {
+			return [address]
+		}
+		let currLevel = 1
+		let currAddressParents = Array.from(this.parentList.get(address))
+		let currAddress = currAddressParents[Math.min(parentLevel, currAddressParents.length - 1)]
+		let path = [address, currAddress]
+		while (currAddress != this.rootAddress && currLevel < this.maxLevel) {
+			currAddress = this.parentList.get(currAddress).values().next().value
+			path.push(currAddress)
+			currLevel++
+		}
+		if (currAddress != this.rootAddress) {
+			return []
+		}
+		return path.reverse()
 	}
 
 }
