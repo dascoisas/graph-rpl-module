@@ -42,6 +42,7 @@ class Graph {
 				this.childList.set(this.rootAddress, childSet)
 				if (this.useMemo) {
 					this.memoPathList.set(vertex.address, [this.createPath(vertex.address, 0)])
+					this.memoPathList.set(this.rootAddress, [this.createPath(this.rootAddress, 0)])
 				}
 			}
 			else {
@@ -94,7 +95,16 @@ class Graph {
 		}
 		return path.reverse()
 	}
-
+	getPath(address, parentLevel) {
+		if (!this.useMemo) {
+			return this.createPath(address, parentLevel)
+		}
+		let pathsArray = this.memoPathList.get(address)
+		if (pathsArray == undefined) {
+			return []
+		}
+		return pathsArray[Math.min(parentLevel, pathsArray.length - 1)]
+	}
 }
 
 module.exports = Graph
