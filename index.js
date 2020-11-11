@@ -56,6 +56,10 @@ class Graph {
 		let childSet = this.bfs(address)
 		let parentSet = this.parentList.get(address)
 		let removedVertices = [address]
+		for (let parent of parentSet) {
+			let childParentSet = this.childList.get(parent)
+			childParentSet.delete(address)
+		}
 		//Verify childrens parents, if this node is the only one, and mark them to future delete
 		for (let child of childSet) {
 			let childParentSet = this.parentList.get(child)
@@ -64,14 +68,13 @@ class Graph {
 			})
 			if (childParentSet.size == 0) {
 				removedVertices.push(child)
+
+				//Need to verify if it's children parent exists, if so, delete this item from it's childList
+				//Iterate over all this children parents array, and remove this node from its parentList
 			}
-			//Need to verify if it's children parent exists, if so, delete this item from it's childList
-			//Iterate over all this children parents array, and remove this node from its parentList
 		}
-		console.log(removedVertices)
-		for (let parent of parentSet) {
-			//console.log(parent)
-		}
+		//console.log(removedVertices)
+
 
 	}
 	addVertex(vertex) {
