@@ -35,6 +35,17 @@ class Graph {
 			throw new Error("Vertex object must have an address and parents key and must not've been initialized")
 		}
 	}
+	addOrUpdateVertex(vertex) {
+		if (vertex.address && this.adjList.get(vertex.address) == undefined && vertex.parents) {
+			this.addVertex(vertex)
+		}
+		else if (vertex.address && this.adjList.get(vertex.address) != undefined && vertex.parents) {
+			this.updateVertex(vertex)
+		}
+		else {
+			throw new Error("Add or Update method error, invalid input")
+		}
+	}
 	getVertex(address) {
 		let vertex = this.adjList.get(address)
 		if (vertex == undefined) {
