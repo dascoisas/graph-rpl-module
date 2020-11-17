@@ -19,7 +19,7 @@ const main = () => {
 	console.log(graph.getPath("k", 1))
 	graph.addOrUpdateVertex({ address: "k", parents: ["h"] })
 	console.log(graph.getPath("k", 0))
-	console.log(graph.adjList)
+	console.log(graph.getVisGraph())
 	//graph.updateVertex({ address: "c", parents: ["d"] })
 	//console.log(graph.getPath("g", 0))
 	//graph.removeVertex("e")

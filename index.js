@@ -57,21 +57,22 @@ class Graph {
 		return this.adjList
 	}
 	getVisGraph() {
-		let auxGraph = {}
-		let visGraph = []
-		let graphLength = 0
-		for (let [node, parentsArray] of this.adjList) {
-			for (let parent of parentsArray) {
-				if (!auxGraph[parent]) {
-					auxGraph[parent] = { _id: graphLength++, edges: [] }
+		let nodes = [], edges = []
+		if (this.rootAddress != undefined) {
+			nodes.push({ id: this.rootAddress, label: this.rootAddress })
+		}
+		this.adjList.forEach((parentArray, currentNode) => {
+			nodes.push({ id: currentNode, label: currentNode })
+			parentArray.forEach((parent, index) => {
+				if (index == 0) {
+					edges.push({ from: currentNode, to: parent, dashes: false })
 				}
-				auxGraph[parent].edges.push(node)
-			}
-		}
-		for (let key in auxGraph) {
-			visGraph.push({ id: key, node: { edges: auxGraph[key].edges } })
-		}
-		return visGraph
+				else {
+					edges.push({ from: currentNode, to: parent, dashes: true })
+				}
+			})
+		})
+		return { nodes, edges }
 	}
 	createPath(address, parentLevel) {
 		if (!this.coordAddress) {
