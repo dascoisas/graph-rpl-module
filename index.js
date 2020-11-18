@@ -59,10 +59,15 @@ class Graph {
 	getVisGraph() {
 		let nodes = [], edges = []
 		if (this.rootAddress != undefined) {
-			nodes.push({ id: this.rootAddress, label: this.rootAddress })
+			nodes.push({ id: this.rootAddress, label: this.rootAddress, group: "root" })
 		}
 		this.adjList.forEach((parentArray, currentNode) => {
-			nodes.push({ id: currentNode, label: currentNode })
+			if (currentNode == this.coordAddress) {
+				nodes.push({ id: currentNode, label: currentNode, group: "coord" })
+			}
+			else {
+				nodes.push({ id: currentNode, label: currentNode, group: "node" })
+			}
 			parentArray.forEach((parent, index) => {
 				if (index == 0) {
 					edges.push({ from: currentNode, to: parent, dashes: false })
