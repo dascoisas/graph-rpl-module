@@ -66,7 +66,7 @@ class Graph {
 				nodes.push({ id: currentNode, label: currentNode, group: "coord" })
 			}
 			else {
-				nodes.push({ id: currentNode, label: currentNode, group: "node" })
+				nodes.push({ id: currentNode, label: currentNode, group: "node", myParent: parentArray[parentArray.length - 1] })
 			}
 			parentArray.forEach((parent, index) => {
 				if (index == 0) {
