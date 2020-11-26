@@ -57,7 +57,7 @@ class Graph {
 		return this.adjList
 	}
 	getVisGraph() {
-		let nodes = [], edges = []
+		let nodes = [], edges = [], onlyPreferredParent = []
 		if (this.rootAddress != undefined) {
 			nodes.push({ id: this.rootAddress, label: this.rootAddress, group: "root" })
 		}
@@ -71,13 +71,14 @@ class Graph {
 			parentArray.forEach((parent, index) => {
 				if (index == 0) {
 					edges.push({ from: currentNode, to: parent, dashes: false })
+					onlyPreferredParent.push({ from: currentNode, to: parent, dashes: false })
 				}
 				else {
-					edges.push({ from: currentNode, to: parent, dashes: true })
+					edges.push({ from: currentNode, to: parent, dashes: true, physics: false })
 				}
 			})
 		})
-		return { nodes, edges }
+		return { nodes, edges, onlyPreferredParent }
 	}
 	createPath(address, parentLevel) {
 		if (!this.coordAddress) {
