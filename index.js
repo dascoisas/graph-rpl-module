@@ -56,6 +56,12 @@ class Graph {
 	getGraph() {
 		return this.adjList
 	}
+	getGraphAsObject() {
+		let obj = Array.from(this.adjList).reduce((obj, [key, value]) => (
+			Object.assign(obj, { [key]: value }) // Be careful! Maps can have non-String keys; object literals can't.
+		  ), {})
+		return obj
+	}
 	getVisGraph() {
 		let nodes = [], edges = [], onlyPreferredParent = []
 		if (this.rootAddress != undefined) {
