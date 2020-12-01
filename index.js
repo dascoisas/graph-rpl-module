@@ -58,7 +58,7 @@ class Graph {
 	}
 	getGraphAsObject() {
 		let obj = Array.from(this.adjList).reduce((obj, [key, value]) => (
-			Object.assign(obj, { [key]: value }) // Be careful! Maps can have non-String keys; object literals can't.
+			Object.assign(obj, { [key]: { parents: value, preferredParent: value[0] } }) // Be careful! Maps can have non-String keys; object literals can't.
 		  ), {})
 		return obj
 	}
