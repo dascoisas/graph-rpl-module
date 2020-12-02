@@ -57,10 +57,18 @@ class Graph {
 		return this.adjList
 	}
 	getGraphAsObject() {
-		let obj = Array.from(this.adjList).reduce((obj, [key, value]) => (
-			Object.assign(obj, { [key]: { parents: value, preferredParent: value[0] } }) // Be careful! Maps can have non-String keys; object literals can't.
+		let obj = Object.assign(obj, { [this.rootAddress]: { parents: [], preferredParent: "" } })
+		obj = Array.from(this.adjList).reduce((obj, [address, parents]) => (
+			Object.assign(obj, { [address]: { parents, preferredParent: parents[0] } }) // Be careful! Maps can have non-String keys; object literals can't.
 		  ), {})
 		return obj
+	}
+	getGraphAsArray() {
+		let array = Array.from(this.adjList, ([address, parents]) => (
+			{ address, parents, preferredParent: parents[0] })
+		  )
+		array.unshift({ address: this.rootAddress, parents: [], preferredParent: "" })
+		return array
 	}
 	getVisGraph() {
 		let nodes = [], edges = [], onlyPreferredParent = []
